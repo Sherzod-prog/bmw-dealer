@@ -1,8 +1,10 @@
-// import { Link, useLocation } from "next/navigation";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Logo from "@/public/logo.svg";
+import Image from "next/image";
 
 const Navbar = () => {
   //   const location = useLocation();
@@ -15,16 +17,24 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className=" border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between mx-auto">
         {/* BMW Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-blue-800 flex items-center justify-center">
-            <span className="text-white font-bold text-lg">BMW</span>
-          </div>
+          <Image
+            width={100}
+            height={100}
+            src={Logo}
+            alt="BMW Logo"
+            className="h-10 w-10 rounded-full}"
+          />
           <span className="font-heading font-bold text-xl text-foreground">
             Dealership
           </span>
+          {/* <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-blue-800 flex items-center justify-center">
+            <span className="text-white font-bold text-lg">BMW</span>
+          </div>
+          */}
         </Link>
 
         {/* Navigation Links */}
