@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import Image from "next/image";
+import { CarTaxiFront, FuelIcon, RefreshCwIcon } from "lucide-react";
+import { ICar } from "@/lib/types";
 
 interface CarCardProps {
   id: string;
@@ -28,7 +30,7 @@ const CarCard = ({
   fuel,
   transmission,
   isNew = false,
-}: CarCardProps) => {
+}: ICar) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
       <div className="relative overflow-hidden">
@@ -36,7 +38,7 @@ const CarCard = ({
           width={400}
           height={300}
           src={image}
-          alt={`${model}`}
+          alt={`${model} ${name}`}
           className="object-contain group-hover:scale-105 transition-transform duration-300"
         />
         {isNew && (
@@ -58,51 +60,16 @@ const CarCard = ({
 
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground mb-4">
           <span className="flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
+            <CarTaxiFront className="w-4 h-4" />
+
             {type}
           </span>
           <span className="flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+            <FuelIcon className="w-4 h-4" />
             {fuel}
           </span>
           <span className="flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
+            <RefreshCwIcon className="w-4 h-4" />
             {transmission}
           </span>
         </div>

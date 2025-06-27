@@ -5,9 +5,11 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Logo from "@/public/logo.svg";
 import Image from "next/image";
+import { ShoppingCart } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  //   const location = useLocation();
+  const pathname = usePathname();
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -31,10 +33,6 @@ const Navbar = () => {
           <span className="font-heading font-bold text-xl text-foreground">
             Dealership
           </span>
-          {/* <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-blue-800 flex items-center justify-center">
-            <span className="text-white font-bold text-lg">BMW</span>
-          </div>
-          */}
         </Link>
 
         {/* Navigation Links */}
@@ -44,10 +42,8 @@ const Navbar = () => {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary"
-                // location.pathname === item.href
-                // ? "text-primary"
-                // : "text-muted-foreground"
+                "text-sm font-medium transition-colors hover:text-primary",
+                pathname === item.href && "text-primary"
               )}
             >
               {item.label}
@@ -63,6 +59,11 @@ const Navbar = () => {
           <Button size="sm" asChild>
             <Link href="/test-drive">Schedule Test Drive</Link>
           </Button>
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/cart">
+              <ShoppingCart />
+            </Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -77,7 +78,7 @@ const Navbar = () => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={10}
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>

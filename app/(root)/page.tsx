@@ -1,53 +1,34 @@
-import Navbar from "@/components/Navbar";
+"use client";
+
 import Hero from "@/components/Hero";
 import CarCard from "@/components/CarCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { ICar } from "@/lib/types";
+
+interface CarListResponse {
+  map: (callback: (car: ICar) => React.ReactNode) => React.ReactNode;
+  [index: number]: ICar;
+}
 
 const HomePage = () => {
   // Sample featured cars data
-  const featuredCars = [
-    {
-      id: "1",
-      name: "BMW",
-      model: "X5",
-      year: 2024,
-      price: 65000,
-      image:
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Cdefs%3E%3ClinearGradient id='car1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23003366;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23001f3f;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='240' fill='url(%23car1)' /%3E%3Ctext x='200' y='120' text-anchor='middle' fill='white' font-size='20' font-family='Arial'%3EBMW X5%3C/text%3E%3C/svg%3E",
-      type: "SUV",
-      fuel: "Hybrid",
-      transmission: "Automatic",
-      isNew: true,
-    },
-    {
-      id: "2",
-      name: "BMW",
-      model: "3 Series",
-      year: 2024,
-      price: 45000,
-      image:
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Cdefs%3E%3ClinearGradient id='car2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23001a33;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23002244;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='240' fill='url(%23car2)' /%3E%3Ctext x='200' y='120' text-anchor='middle' fill='white' font-size='18' font-family='Arial'%3EBMW 3 Series%3C/text%3E%3C/svg%3E",
-      type: "Sedan",
-      fuel: "Gasoline",
-      transmission: "Automatic",
-      isNew: true,
-    },
-    {
-      id: "3",
-      name: "BMW",
-      model: "iX",
-      year: 2024,
-      price: 85000,
-      image:
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Cdefs%3E%3ClinearGradient id='car3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23003366;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23004080;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='240' fill='url(%23car3)' /%3E%3Ctext x='200' y='120' text-anchor='middle' fill='white' font-size='20' font-family='Arial'%3EBMW iX%3C/text%3E%3C/svg%3E",
-      type: "Electric SUV",
-      fuel: "Electric",
-      transmission: "Automatic",
-      isNew: true,
-    },
-  ];
 
+  const fetchCarList = async () => {
+    const response = await fetch("http://localhost:3000/api/car");
+    const data = await response.json();
+    return data;
+  };
+
+  const info = useQuery({ queryKey: ["cars"], queryFn: fetchCarList });
+  if (info.isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (info.isError) {
+    return <div>Error: {info.error.message}</div>;
+  }
+  console.log("DATA CAR", info.data);
   return (
     <div className="min-h-screen bg-background">
       <Hero />
@@ -66,7 +47,7 @@ const HomePage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {featuredCars.map((car) => (
+            {info.data.map((car: ICar) => (
               <CarCard key={car.id} {...car} />
             ))}
           </div>
