@@ -13,8 +13,6 @@ interface CarListResponse {
 }
 
 const HomePage = () => {
-  // Sample featured cars data
-
   const fetchCarList = async () => {
     const response = await fetch("http://localhost:3000/api/car");
     const data = await response.json();
@@ -28,7 +26,7 @@ const HomePage = () => {
   if (info.isError) {
     return <div>Error: {info.error.message}</div>;
   }
-  console.log("DATA CAR", info.data);
+
   return (
     <div className="min-h-screen bg-background">
       <Hero />

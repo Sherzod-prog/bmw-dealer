@@ -6,19 +6,6 @@ import Image from "next/image";
 import { CarTaxiFront, FuelIcon, RefreshCwIcon } from "lucide-react";
 import { ICar } from "@/lib/types";
 
-interface CarCardProps {
-  id: string;
-  name: string;
-  model: string;
-  year: number;
-  price: number;
-  image: string;
-  type: string;
-  fuel: string;
-  transmission: string;
-  isNew?: boolean;
-}
-
 const CarCard = ({
   id,
   name,
@@ -32,14 +19,14 @@ const CarCard = ({
   isNew = false,
 }: ICar) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group p-0">
       <div className="relative overflow-hidden">
         <Image
-          width={400}
+          width={650}
           height={300}
           src={image}
           alt={`${model} ${name}`}
-          className="object-contain group-hover:scale-105 transition-transform duration-300"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {isNew && (
           <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground">
@@ -47,7 +34,6 @@ const CarCard = ({
           </Badge>
         )}
       </div>
-
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-heading font-semibold text-lg text-foreground">
@@ -61,7 +47,6 @@ const CarCard = ({
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground mb-4">
           <span className="flex items-center gap-1">
             <CarTaxiFront className="w-4 h-4" />
-
             {type}
           </span>
           <span className="flex items-center gap-1">

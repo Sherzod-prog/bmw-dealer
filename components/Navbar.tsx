@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between mx-auto">
+      <div className="container flex h-16 items-center justify-between mx-auto px-4 py-8">
         {/* BMW Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
@@ -53,9 +53,6 @@ const Navbar = () => {
 
         {/* Actions */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/contact">Get Quote</Link>
-          </Button>
           <Button size="sm" asChild>
             <Link href="/test-drive">Schedule Test Drive</Link>
           </Button>
