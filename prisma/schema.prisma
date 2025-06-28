@@ -4,6 +4,9 @@ datasource db {
     directUrl = env("DATABASE_URL_NON_POOLING")
 }
 
+// DATABASE_URL="postgresql://developer:dwZRS.4Qcfz_N8W@postgresql-developer.alwaysdata.net/developer_dealer?schema=public"
+// DATABASE_URL_NON_POOLING="postgresql://developer:dwZRS.4Qcfz_N8W@postgresql-developer.alwaysdata.net/developer_dealer?schema=public"
+
 generator client {
     provider = "prisma-client-js"
 }
