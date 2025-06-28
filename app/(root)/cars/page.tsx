@@ -38,6 +38,7 @@ const Cars = () => {
         ? `http://localhost:3000/api/car?${params.toString()}`
         : "http://localhost:3000/api/car";
 
+    console.log(params.toString());
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -46,7 +47,6 @@ const Cars = () => {
     return data;
   };
   //  /api/car?minPrice=40000&maxPrice=120000&engineType=Diesel&bodyType=SUV
-  //  /api/cars?minPrice=40000&maxPrice=120000&engineType=Diesel&bodyType=SUV
 
   const allCars = useQuery({ queryKey: ["cars"], queryFn: fetchCarList });
   if (allCars.isLoading) {
