@@ -60,6 +60,7 @@ export async function GET(req: NextRequest) {
     const cars = await prisma.car.findMany({
       where: filters,
     });
+
     // const cars = await prisma.car.findMany();
 
     return NextResponse.json(cars);
