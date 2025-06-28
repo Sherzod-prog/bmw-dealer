@@ -34,7 +34,33 @@ export async function POST(req: NextRequest) {
 }
 export async function GET(req: NextRequest) {
   try {
-    const cars = await prisma.car.findMany();
+    const { searchParams } = new URL(req.url);
+
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const engineType = searchParams.get("engineType");
+    const bodyType = searchParams.get("bodyType");
+
+    const filters: any = {};
+
+    if (minPrice || maxPrice) {
+      filters.price = {};
+      if (minPrice) filters.price.gte = Number(minPrice);
+      if (maxPrice) filters.price.lte = Number(maxPrice);
+    }
+
+    if (engineType) {
+      filters.engineType = engineType;
+    }
+
+    if (bodyType) {
+      filters.bodyType = bodyType;
+    }
+
+    const cars = await prisma.car.findMany({
+      where: filters,
+    });
+
     return NextResponse.json(cars);
   } catch (error) {
     console.log("[CAR_GET] Server error", error);

@@ -7,11 +7,6 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ICar } from "@/lib/types";
 
-interface CarListResponse {
-  map: (callback: (car: ICar) => React.ReactNode) => React.ReactNode;
-  [index: number]: ICar;
-}
-
 const HomePage = () => {
   const fetchCarList = async () => {
     const response = await fetch("http://localhost:3000/api/car");
@@ -19,7 +14,7 @@ const HomePage = () => {
     return data;
   };
 
-  const info = useQuery({ queryKey: ["cars"], queryFn: fetchCarList });
+  const info = useQuery({ queryKey: ["car"], queryFn: fetchCarList });
   if (info.isLoading) {
     return <div>Loading...</div>;
   }

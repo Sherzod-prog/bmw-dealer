@@ -20,10 +20,33 @@ const Cars = () => {
   });
 
   const fetchCarList = async () => {
-    const response = await fetch("http://localhost:3000/api/car");
+    const params = new URLSearchParams();
+
+    params.append("minPrice", filters.priceRange[0].toString());
+    params.append("maxPrice", filters.priceRange[1].toString());
+
+    if (filters.bodyType !== "all") params.append("bodyType", filters.bodyType);
+    if (filters.fuelType !== "all")
+      params.append("engineType", filters.fuelType);
+    if (filters.transmission !== "all")
+      params.append("transmission", filters.transmission);
+    if (filters.year !== "all") params.append("year", filters.year);
+    if (filters.searchTerm) params.append("search", filters.searchTerm);
+
+    const url =
+      params.toString().length > 0
+        ? `http://localhost:3000/api/car?${params.toString()}`
+        : "http://localhost:3000/api/car";
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
     const data = await response.json();
     return data;
   };
+  //  /api/car?minPrice=40000&maxPrice=120000&engineType=Diesel&bodyType=SUV
+  //  /api/cars?minPrice=40000&maxPrice=120000&engineType=Diesel&bodyType=SUV
 
   const allCars = useQuery({ queryKey: ["cars"], queryFn: fetchCarList });
   if (allCars.isLoading) {
@@ -33,67 +56,67 @@ const Cars = () => {
     return <div>Error: {allCars.error.message}</div>;
   }
 
-  const filteredCars = useMemo(() => {
-    let cars = allCars.data.filter((car: ICar) => {
-      // Price filter
-      if (
-        car.price < filters.priceRange[0] ||
-        car.price > filters.priceRange[1]
-      ) {
-        return false;
-      }
+  // const filteredCars = useMemo(() => {
+  //   let cars = allCars.data.filter((car: ICar) => {
+  //     // Price filter
+  //     if (
+  //       car.price < filters.priceRange[0] ||
+  //       car.price > filters.priceRange[1]
+  //     ) {
+  //       return false;
+  //     }
 
-      // Search term filter
-      if (filters.searchTerm) {
-        const searchTerm = filters.searchTerm.toLowerCase();
-        const carText = `${car.name} ${car.model} ${car.year}`.toLowerCase();
-        if (!carText.includes(searchTerm)) {
-          return false;
-        }
-      }
+  //     // Search term filter
+  //     if (filters.searchTerm) {
+  //       const searchTerm = filters.searchTerm.toLowerCase();
+  //       const carText = `${car.name} ${car.model} ${car.year}`.toLowerCase();
+  //       if (!carText.includes(searchTerm)) {
+  //         return false;
+  //       }
+  //     }
 
-      // Body type filter
-      if (filters.bodyType !== "all") {
-        const carType = car.type.toLowerCase().includes("suv")
-          ? "suv"
-          : car.type.toLowerCase().includes("sedan")
-          ? "sedan"
-          : car.type.toLowerCase().includes("coupe")
-          ? "coupe"
-          : "other";
-        if (carType !== filters.bodyType) {
-          return false;
-        }
-      }
+  //     // Body type filter
+  //     if (filters.bodyType !== "all") {
+  //       const carType = car.type.toLowerCase().includes("suv")
+  //         ? "suv"
+  //         : car.type.toLowerCase().includes("sedan")
+  //         ? "sedan"
+  //         : car.type.toLowerCase().includes("coupe")
+  //         ? "coupe"
+  //         : "other";
+  //       if (carType !== filters.bodyType) {
+  //         return false;
+  //       }
+  //     }
 
-      // Fuel type filter
-      if (filters.fuelType !== "all") {
-        if (car.fuel.toLowerCase() !== filters.fuelType) {
-          return false;
-        }
-      }
+  //     // Fuel type filter
+  //     if (filters.fuelType !== "all") {
+  //       if (car.fuel.toLowerCase() !== filters.fuelType) {
+  //         return false;
+  //       }
+  //     }
 
-      // Transmission filter
-      if (filters.transmission !== "all") {
-        if (car.transmission.toLowerCase() !== filters.transmission) {
-          return false;
-        }
-      }
+  //     // Transmission filter
+  //     if (filters.transmission !== "all") {
+  //       if (car.transmission.toLowerCase() !== filters.transmission) {
+  //         return false;
+  //       }
+  //     }
 
-      // Year filter
-      if (filters.year !== "all") {
-        if (car.year.toString() !== filters.year) {
-          return false;
-        }
-      }
+  //     // Year filter
+  //     if (filters.year !== "all") {
+  //       if (car.year.toString() !== filters.year) {
+  //         return false;
+  //       }
+  //     }
 
-      return true;
-    });
-    cars = cars.sort((a: ICar, b: ICar) =>
-      sortByPriceAsc ? a.price - b.price : b.price - a.price
-    );
-    return cars;
-  }, [filters, sortByPriceAsc]);
+  //     return true;
+  //   });
+  //   cars = cars.sort((a: ICar, b: ICar) =>
+  //     sortByPriceAsc ? a.price - b.price : b.price - a.price
+  //   );
+  //   return cars;
+  // }, [filters, sortByPriceAsc]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,7 +141,7 @@ const Cars = () => {
           <div className="lg:w-3/4">
             <div className="flex justify-between items-center mb-6">
               <p className="text-muted-foreground">
-                Showing {filteredCars.length} of {allCars.data.length} vehicles
+                Showing {allCars.data.length} of {allCars.data.length} vehicles
               </p>
               <Button
                 variant="outline"
@@ -130,9 +153,9 @@ const Cars = () => {
               </Button>
             </div>
 
-            {filteredCars.length > 0 ? (
+            {allCars.data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredCars.map((car: ICar) => (
+                {allCars.data.map((car: ICar) => (
                   <CarCard key={car.id} {...car} />
                 ))}
               </div>
