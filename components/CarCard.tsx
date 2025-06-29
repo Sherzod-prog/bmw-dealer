@@ -45,15 +45,15 @@ const CarCard = ({
         </div>
 
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground mb-4">
-          <span className="flex items-center gap-1">
-            <CarTaxiFront className="w-4 h-4" />
+          <span className="flex items-center gap-1 capitalize">
+            <CarTaxiFront className="w-4 h-4 " />
             {type}
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 capitalize">
             <FuelIcon className="w-4 h-4" />
-            {fuel}
+            {fuel.toLowerCase()}
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 capitalize">
             <RefreshCwIcon className="w-4 h-4" />
             {transmission}
           </span>

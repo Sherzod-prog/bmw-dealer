@@ -1,6 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma/prisma-client";
 
+// GET
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = Number(params.id); // Convert id to number
+    if (isNaN(id)) {
+      return NextResponse.json({ message: "Invalid car id" }, { status: 400 });
+    }
+    const car = await prisma.car.findUnique({
+      where: { id },
+    });
+    if (!car) {
+      return NextResponse.json({ message: "Car not found" }, { status: 404 });
+    }
+    return NextResponse.json(car, { status: 200 });
+  } catch (error) {
+    console.error(`[CAR_GET] Error fetching car with ID ${params.id}:`, error);
+    return NextResponse.json(
+      { message: "Server error", error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+// PATCH
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }

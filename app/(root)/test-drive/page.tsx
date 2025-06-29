@@ -62,7 +62,7 @@ const TestDrive = () => {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -78,7 +78,11 @@ const TestDrive = () => {
                 <FormItem>
                   <FormLabel>Your phone</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="shadcn" {...field} />
+                    <Input
+                      type="tel"
+                      placeholder="+1 (123) 456-7890"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     This is your public phone number.

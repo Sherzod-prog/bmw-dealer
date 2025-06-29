@@ -9,7 +9,7 @@ import { ICar } from "@/lib/types";
 
 const HomePage = () => {
   const fetchCarList = async () => {
-    const response = await fetch("http://localhost:3000/api/car");
+    const response = await fetch("http://localhost:3000/api/cars");
     const data = await response.json();
     return data;
   };

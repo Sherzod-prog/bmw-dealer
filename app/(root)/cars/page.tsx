@@ -1,11 +1,12 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import CarCard from "@/components/CarCard";
 import CarFilter, { FilterState } from "@/components/CarFilter";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { ICar } from "@/lib/types";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const Cars = () => {
   const [sortByPriceAsc, setSortByPriceAsc] = useState(true);
@@ -22,12 +23,11 @@ const Cars = () => {
   const fetchCarList = async () => {
     const params = new URLSearchParams();
 
-    params.append("minPrice", filters.priceRange[0].toString());
-    params.append("maxPrice", filters.priceRange[1].toString());
+    params.append("minprice", filters.priceRange[0].toString());
+    params.append("maxprice", filters.priceRange[1].toString());
 
-    if (filters.bodyType !== "all") params.append("bodyType", filters.bodyType);
-    if (filters.fuelType !== "all")
-      params.append("engineType", filters.fuelType);
+    if (filters.bodyType !== "all") params.append("type", filters.bodyType);
+    if (filters.fuelType !== "all") params.append("fuel", filters.fuelType);
     if (filters.transmission !== "all")
       params.append("transmission", filters.transmission);
     if (filters.year !== "all") params.append("year", filters.year);
@@ -35,8 +35,8 @@ const Cars = () => {
 
     const url =
       params.toString().length > 0
-        ? `http://localhost:3000/api/car?${params.toString()}`
-        : "http://localhost:3000/api/car";
+        ? `http://localhost:3000/api/cars?${params.toString()}`
+        : "http://localhost:3000/api/cars";
 
     console.log(params.toString());
     const response = await fetch(url);
@@ -46,77 +46,18 @@ const Cars = () => {
     const data = await response.json();
     return data;
   };
-  //  /api/car?minPrice=40000&maxPrice=120000&engineType=Diesel&bodyType=SUV
+  const debouncedFilters = useDebounce(filters, 500);
 
-  const allCars = useQuery({ queryKey: ["cars"], queryFn: fetchCarList });
+  const allCars = useQuery({
+    queryKey: ["cars", debouncedFilters],
+    queryFn: fetchCarList,
+  });
   if (allCars.isLoading) {
     return <div>Loading...</div>;
   }
   if (allCars.isError) {
     return <div>Error: {allCars.error.message}</div>;
   }
-
-  // const filteredCars = useMemo(() => {
-  //   let cars = allCars.data.filter((car: ICar) => {
-  //     // Price filter
-  //     if (
-  //       car.price < filters.priceRange[0] ||
-  //       car.price > filters.priceRange[1]
-  //     ) {
-  //       return false;
-  //     }
-
-  //     // Search term filter
-  //     if (filters.searchTerm) {
-  //       const searchTerm = filters.searchTerm.toLowerCase();
-  //       const carText = `${car.name} ${car.model} ${car.year}`.toLowerCase();
-  //       if (!carText.includes(searchTerm)) {
-  //         return false;
-  //       }
-  //     }
-
-  //     // Body type filter
-  //     if (filters.bodyType !== "all") {
-  //       const carType = car.type.toLowerCase().includes("suv")
-  //         ? "suv"
-  //         : car.type.toLowerCase().includes("sedan")
-  //         ? "sedan"
-  //         : car.type.toLowerCase().includes("coupe")
-  //         ? "coupe"
-  //         : "other";
-  //       if (carType !== filters.bodyType) {
-  //         return false;
-  //       }
-  //     }
-
-  //     // Fuel type filter
-  //     if (filters.fuelType !== "all") {
-  //       if (car.fuel.toLowerCase() !== filters.fuelType) {
-  //         return false;
-  //       }
-  //     }
-
-  //     // Transmission filter
-  //     if (filters.transmission !== "all") {
-  //       if (car.transmission.toLowerCase() !== filters.transmission) {
-  //         return false;
-  //       }
-  //     }
-
-  //     // Year filter
-  //     if (filters.year !== "all") {
-  //       if (car.year.toString() !== filters.year) {
-  //         return false;
-  //       }
-  //     }
-
-  //     return true;
-  //   });
-  //   cars = cars.sort((a: ICar, b: ICar) =>
-  //     sortByPriceAsc ? a.price - b.price : b.price - a.price
-  //   );
-  //   return cars;
-  // }, [filters, sortByPriceAsc]);
 
   return (
     <div className="min-h-screen bg-background">
