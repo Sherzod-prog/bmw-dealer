@@ -18,13 +18,15 @@ const CarCard = ({
   transmission,
   isNew = false,
 }: ICar) => {
+  console.log("CarCard props:", model);
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group p-0">
       <div className="relative overflow-hidden">
         <Image
           width={650}
           height={300}
-          src={image}
+          src={image || ""}
           alt={`${model} ${name}`}
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -39,9 +41,7 @@ const CarCard = ({
           <h3 className="font-heading font-semibold text-lg text-foreground">
             {year} {name} {model}
           </h3>
-          <span className="font-bold text-primary text-lg">
-            ${price.toLocaleString()}
-          </span>
+          <span className="font-bold text-primary text-lg">${price}</span>
         </div>
 
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground mb-4">
@@ -51,7 +51,7 @@ const CarCard = ({
           </span>
           <span className="flex items-center gap-1 capitalize">
             <FuelIcon className="w-4 h-4" />
-            {fuel.toLowerCase()}
+            {fuel}
           </span>
           <span className="flex items-center gap-1 capitalize">
             <RefreshCwIcon className="w-4 h-4" />

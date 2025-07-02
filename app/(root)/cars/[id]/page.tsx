@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LeasingTable from "@/components/LeasingTable";
@@ -39,15 +39,16 @@ export default function CarDetailPage() {
   const car = carsDetail.data;
 
   return (
-    <div className=" max-w-7xl mx-auto p-2 space-y-6">
+    <div className="container mx-auto p-2 space-y-6">
       <Card className="overflow-hidden ">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="relative w-full md:h-full">
             <Image
               src={car.image}
               alt={`${car.name} ${car.model}`}
-              fill
-              className="object-cover rounded-2xl p-2"
+              width={800}
+              height={600}
+              className="rounded-2xl p-2"
             />
           </div>
 
