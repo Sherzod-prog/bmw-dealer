@@ -50,8 +50,8 @@ export async function GET(req: NextRequest) {
 
     const minPrice = searchParams.get("minprice");
     const maxPrice = searchParams.get("maxprice");
-    const engineType = searchParams.get("enginetype");
-    const bodyType = searchParams.get("bodytype");
+    const engineType = searchParams.get("fuel");
+    const bodyType = searchParams.get("type");
     const transmission = searchParams.get("transmission");
     const year = searchParams.get("year");
     const search = searchParams.get("search");

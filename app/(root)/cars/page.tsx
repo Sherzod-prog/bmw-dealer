@@ -23,15 +23,18 @@ const Cars = () => {
   const fetchCarList = async () => {
     const params = new URLSearchParams();
 
-    params.append("minprice", filters.priceRange[0].toString());
-    params.append("maxprice", filters.priceRange[1].toString());
+    if (filters.priceRange[0] > 0)
+      params.append("minprice", filters.priceRange[0].toString());
+    if (filters.priceRange[1] < 200000)
+      params.append("maxprice", filters.priceRange[1].toString());
 
     if (filters.bodyType !== "all") params.append("type", filters.bodyType);
     if (filters.fuelType !== "all") params.append("fuel", filters.fuelType);
     if (filters.transmission !== "all")
       params.append("transmission", filters.transmission);
     if (filters.year !== "all") params.append("year", filters.year);
-    if (filters.searchTerm) params.append("search", filters.searchTerm);
+    if (filters.searchTerm.length > 3)
+      params.append("search", filters.searchTerm);
 
     const url =
       params.toString().length > 0
