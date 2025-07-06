@@ -33,7 +33,7 @@ const Cars = () => {
     if (filters.transmission !== "all")
       params.append("transmission", filters.transmission);
     if (filters.year !== "all") params.append("year", filters.year);
-    if (filters.searchTerm.length > 3)
+    if (filters.searchTerm.length > 1)
       params.append("search", filters.searchTerm);
 
     const url =

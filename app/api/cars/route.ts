@@ -3,8 +3,8 @@ import { prisma } from "@/prisma/prisma-client";
 
 interface Filters {
   price?: { gte?: number; lte?: number };
-  engineType?: string;
-  bodyType?: string;
+  fuel?: string;
+  type?: string;
   transmission?: string;
   year?: number;
   OR?: Array<{
@@ -50,8 +50,8 @@ export async function GET(req: NextRequest) {
 
     const minPrice = searchParams.get("minprice");
     const maxPrice = searchParams.get("maxprice");
-    const engineType = searchParams.get("fuel");
-    const bodyType = searchParams.get("type");
+    const fuel = searchParams.get("fuel");
+    const type = searchParams.get("type");
     const transmission = searchParams.get("transmission");
     const year = searchParams.get("year");
     const search = searchParams.get("search");
@@ -64,8 +64,8 @@ export async function GET(req: NextRequest) {
       if (maxPrice) filters.price.lte = Number(maxPrice);
     }
 
-    if (engineType) filters.engineType = engineType;
-    if (bodyType) filters.bodyType = bodyType;
+    if (fuel) filters.fuel = fuel;
+    if (type) filters.type = type;
     if (transmission) filters.transmission = transmission;
     if (year) filters.year = Number(year);
 

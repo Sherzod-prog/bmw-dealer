@@ -6,25 +6,21 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ICar } from "@/lib/types";
-import { useGetPokemonByNameQuery } from "@/services/apicars";
 
 const HomePage = () => {
-  const { data, error, isLoading } = useGetPokemonByNameQuery("cars");
+  const fetchCarList = async () => {
+    const response = await fetch("http://localhost:3000/api/cars");
+    const data = await response.json();
+    return data;
+  };
 
-  // const fetchCarList = async () => {
-  //   const response = await fetch("http://localhost:3000/api/cars");
-  //   const data = await response.json();
-  //   return data;
-  // };
-
-  // const info = useQuery({ queryKey: ["car"], queryFn: fetchCarList });
-  // if (info.isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-  // if (info.isError) {
-  //   return <div>Error: {info.error.message}</div>;
-  // }
-  console.log("Data fetched:", data);
+  const info = useQuery({ queryKey: ["car"], queryFn: fetchCarList });
+  if (info.isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (info.isError) {
+    return <div>Error: {info.error.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,14 +38,16 @@ const HomePage = () => {
               for the ultimate driving experience.
             </p>
           </div>
-          {error ? (
+          {info.error ? (
             <>Oh no, there was an error</>
-          ) : isLoading ? (
+          ) : info.isLoading ? (
             <>Loading...</>
-          ) : data ? (
+          ) : info.data ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <CarCard key={data.id} {...data} />
+                {info.data.map((car: ICar) => (
+                  <CarCard key={car.id} {...car} />
+                ))}
               </div>
             </>
           ) : null}
