@@ -18,8 +18,6 @@ const CarCard = ({
   transmission,
   isNew = false,
 }: ICar) => {
-  console.log("CarCard props:", model);
-
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group p-0">
       <div className="relative overflow-hidden">
