@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { url } from "inspector/promises";
 import Link from "next/link";
 
 const Hero = () => {
@@ -8,7 +9,8 @@ const Hero = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"%3E%3Cdefs%3E%3ClinearGradient id="bg" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23001f3f;stop-opacity:1" /%3E%3Cstop offset="100%25" style="stop-color:%23003366;stop-opacity:1" /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="1200" height="800" fill="url(%23bg)" /%3E%3Cpath d="M0,400 Q300,200 600,400 T1200,400 L1200,800 L0,800 Z" fill="%23002244" opacity="0.8"/%3E%3C/svg%3E')`,
+          backgroundImage: `url('https://images.unsplash.com/photo-1648406485231-9ba087d7b1ef?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+          filter: "brightness(0.4)",
         }}
       />
 
